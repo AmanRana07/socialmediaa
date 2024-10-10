@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Login</title>
+    <style>
+        /* CSS file (static/css/style.css) */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F5F8FA;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #212529;
+    text-align: left;
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2,
+.register-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-form form,
+.register-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form form input,
+.register-form form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.login-form form button,
+.register-form form button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form form button:hover,
+.register-form form button:hover {
+    background-color: #0056b3;
+}
+
+p {
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <div class="modal-dialog">
+        <div class="login-form">
+            <h2>Login</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+        </div>
+    </div>
+</body>
+</html>

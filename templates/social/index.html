@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Home Page{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        <!--------------------------Left Column Start-->
+        <div class="col-12 col-lg-3">
+            <div class="left-column">
+
+                <div class="card card-left1 mb-4">
+                    <img src="{% static 'img/photo-1455448972184-de647495d428.jpg' %}" alt="" class="card-img-top img-fluid">
+                    <div class="card-body text-center">
+                        <form method="POST" enctype="multipart/form-data" class="text-center">
+                            {% csrf_token %}
+                            <img src="{{ user.profile.profile_picture.url }}" alt="img" width="120px" height="120px" class="rounded-circle mt-n5" id="profilePicture">
+                            <input type="file" name="profile_picture" id="profile_picture" class="d-none" accept="image/*" onchange="this.form.submit();">
+                            <label for="profile_picture" class="btn btn-secondary mt-2">Change Profile Picture</label>
+                            <h5 class="card-title">{{ user.username }}</h5> <!-- Dynamically display the logged-in user's name -->
+                            <textarea name="bio" class="form-control mt-2" rows="2" placeholder="Tell us about yourself...">{{ user.profile.bio }}</textarea>
+                            <button type="submit" class="btn btn-primary mt-2">Update Profile</button> <!-- Submit button -->
+                        </form>
+                        <p class="card-text text-justify mb-2">{{ user.profile.bio }}</p> <!-- Display bio -->
+                        <ul class="list-unstyled nav justify-content-center">
+                            <a href="#" class="text-dark text-decoration-none"><li class="nav-item">Friends <br><strong>12M</strong></li></a>
+                            <a href="#" class="text-dark text-decoration-none"><li class="nav-item">Enemies <br><strong>1</strong></li></a>
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <div class="card shadow-sm card-left2 mb-4">
+                    <div class="card-body">
+                        <h5 class="mb-3 card-title">About <small><a href="#" class="ml-1">Edit</a></small></h5>
+                        <p class="card-text"><i class="fas fa-calendar-week mr-2"></i> Went to <a href="#" class="text-decoration-none">oh Canada</a></p>
+                        <p class="card-text"><i class="fas fa-user-friends mr-2"></i> Became friends with <a href="#" class="text-decoration-none">Obama</a></p>
+                        <p class="card-text"><i class="far fa-building mr-2"></i> Works at <a href="#" class="text-decoration-none">Github</a></p>
+                        <p class="card-text"><i class="fas fa-home mr-2"></i> Lives in <a href="#" class="text-decoration-none">San Francisco</a></p>
+                        <p class="card-text"><i class="fas fa-map-marker mr-2"></i> From <a href="#" class="text-decoration-none">Seattle, WA</a></p>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm card-left3 mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Photos<small class="ml-2"><a href="#">.Edit</a></small></h5>
+                        <div class="row">
+                            <div class="col-6 p-1">
+                                <a href="{% static 'img/left1.jpg' %}" data-lightbox="id"><img src="{% static 'img/left1.jpg' %}" alt="img" class="img-fluid my-2"></a>
+                                <a href="{% static 'img/left2.jpg' %}" data-lightbox="id"><img src="{% static 'img/left2.jpg' %}" alt="img" class="img-fluid my-2"></a>
+                                <a href="{% static 'img/left3.jpg' %}" data-lightbox="id"><img src="{% static 'img/left3.jpg' %}" alt="img" class="img-fluid my-2"></a>
+                            </div>
+
+                            <div class="col-6 p-1">
+                                <a href="{% static 'img/left4.jpg' %}" data-lightbox="id"><img src="{% static 'img/left4.jpg' %}" alt="img" class="img-fluid my-2"></a>
+                                <a href="{% static 'img/left5.jpg' %}" data-lightbox="id"><img src="{% static 'img/left5.jpg' %}" alt="img" class="img-fluid my-2"></a>
+                                <a href="{% static 'img/left6.jpg' %}" data-lightbox="id"><img src="{% static 'img/left6.jpg' %}" alt="img" class="img-fluid my-2"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--------------------------Ends Left Column-->
+
+        <!---------------------------------------Middle Column Start---------------->
+        <div class="col-12 col-lg-6">
+            <div class="middle-column">
+                <div class="card">
+                    <div class="card-header bg-transparent">
+                        <form method="POST" enctype="multipart/form-data" class="form-inline">
+                            {% csrf_token %}
+                            <div class="input-group w-100">
+                                <input type="text" name="message" id="message" placeholder="What's on your mind?" class="form-control form-control-md" required>
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-camera"></i>
+                                        <input type="file" name="image" id="image" class="d-none" accept="image/*" onchange="this.form.submit();">  <!-- Hidden file input -->
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary ml-2">Post</button> <!-- Submit button -->
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        {% for post in posts %}
+                        <div class="media mb-4">
+                            <img src="{{ post.user.profile.profile_picture.url }}" alt="img" width="55px" height="55px" class="rounded-circle mr-3">
+                            <div class="media-body">
+                                <h5>{{ post.user.username }}</h5>
+                                <p class="card-text text-justify">{{ post.message }}</p>
+                                {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="Post image" class="img-fluid mb-2">
+                                {% endif %}
+                                <small>{{ post.created_at|date:"F j, Y, g:i a" }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!---------------------------Starts Right Column----------------->
+        <div class="col-12 col-lg-3">
+            <div class="right-column">
+               
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title">Likes <a href="#" class="ml-1"><small>.View All</small></a></h6>
+                        <div class="row no-gutters d-none d-lg-flex">
+                            <div class="col-6 p-1">
+                                <img src="{% static 'img/avatar-dhg.png' %}" alt="img" width="80px" height="80px" class="rounded-circle mb-4">
+                                <img src="{% static 'img/avatar-fat.jpg' %}" alt="img" width="80px" height="80px" class="rounded-circle">
+                            </div>
+                            <div class="col-6 p-1 text-left">
+                                <h6>Jacob Thornton @fat</h6>
+                                <a href="#" class="btn btn-outline-info btn-sm btn-block mb-4"> Follow </a>
+                                <h6>Dave Gamache</h6>
+                                <a href="#" class="btn btn-outline-info btn-sm btn-block mb-4"> Follow </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<script>
+    document.querySelector('.input-group-text').onclick = function() {
+        document.getElementById('image').click();
+    };
+</script>
+{% endblock %}
